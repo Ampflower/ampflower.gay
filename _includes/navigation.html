@@ -1,0 +1,8 @@
+<nav>
+	{% for item in site.data.navigation %}
+	{% capture htmllink %}{{item.link}}.html{% endcapture %}
+	<a href="{{item.link}}" {% if page.url==item.link or page.url==htmllink %} class="current" {%endif%}>
+		{{item.name}}
+	</a>
+	{% endfor %}
+</nav>

@@ -1,0 +1,39 @@
+a#the-glitch {
+	background-color: #EFE;
+	text-decoration: none;
+
+	span.omit {
+		text-decoration: underline;
+	}
+}
+
+a#github {
+	--github-branding: #1b1817;
+	background-color: #FFF;
+}
+
+a#modrinth {
+	--modrinth-branding: #0abf71;
+	background-color: #DFFFEF;
+}
+
+a#ko-fi {
+	background-color: #d2eef9;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+	a#the-glitch {
+		background-color: #001800;
+	}
+	a#github {
+		--github-branding: #FFF;
+		background-color: #1b1817;
+	}
+	a#modrinth {
+		--modrinth-branding: #1DD76A;
+		background-color: #01180a;
+	}
+	a#ko-fi {
+		background-color: #06222d;
+	}
+}

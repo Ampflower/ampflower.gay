@@ -1,0 +1,92 @@
+---
+---
+
+@import "brand";
+
+main {
+	position: absolute;
+	top: 50%;
+	transform: translate(0%, -50%);
+	font-family: 'Arial', 'sans-serif';
+	background-color: #d7e2f4;
+	padding: 3px;
+	border: 3px solid #ebf1fa;
+	border-radius: 18pt;
+	max-width: 320pt;
+
+	> div {
+		display: flex;
+		justify-content: center;
+
+		&.links {
+			flex-flow: wrap;
+			margin: 4pt 0pt;
+
+			a {
+				display: flex;
+				margin: 1pt 2pt;
+				padding: 2pt;
+				align-items: center;
+				border-radius: 8pt;
+
+				span {
+					margin: 2pt;
+				}
+			}
+		}
+	}
+}
+
+.center {
+	text-align: center;
+}
+
+div.p {
+	margin: 4pt 3pt;
+}
+
+.content {
+	margin-left: 8pt;
+}
+
+@media screen and (min-width: 260px) {
+	main {
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+@media screen and (max-width: 640px) {
+	.omit {
+		display: none;
+	}
+}
+
+span#the-glitch-fake-icon {
+	color: #0D0;
+	margin: auto;
+	font-family: 'System', 'monospace';
+	width: 24px;
+	text-align: center;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+	main {
+		background-color: #030b49;
+		border: 3px solid #010419;
+	}
+	body {
+		background-color: #000;
+		color: #FFF;
+	}
+	a {
+		color: #7AF;
+		&:visited {
+			color: #FAF;
+		}
+	}
+}
+
+img {
+	border-radius: 16pt;
+}

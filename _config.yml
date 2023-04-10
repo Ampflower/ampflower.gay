@@ -1,0 +1,14 @@
+exclude:
+  - CNAME
+  - LICENSE
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+      style: "style"
+
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-titles-from-headings
