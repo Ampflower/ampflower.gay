@@ -1,13 +1,14 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="utf-8"/>
 	<title>{%if page.title%}{{page.title}} | {%endif%}Ampflower</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="theme-color" content="#3666b7"/>
+	<meta name="description" content="{{page.description}}"/>
 	<meta property="og:title" content="{%if page.title%}{{page.title}} | {%endif%}Ampflower"/>
 	<meta property="og:description" content="{{page.description}}"/>
-	<meta property="og:image" content="https://avatars.githubusercontent.com/u/8528256?v=4"/>
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/8528256?0"/>
 	{% if page.style %}
 	<link rel="stylesheet" href="/assets/css/{{page.style}}.css"/>
 	{% endif %}
