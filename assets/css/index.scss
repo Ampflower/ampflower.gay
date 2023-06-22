@@ -33,6 +33,19 @@ main {
 				align-items: center;
 				border-radius: 8pt;
 
+				&:hover {
+					transform: translateY(-1pt);
+					animation-name: trans;
+
+					// Normally you'd put these in a stateless element,
+					// but CSS doesn't do *anything special* for transforming back.
+					// So, yes, unfortunately, this jumps back regardless.
+					animation-duration: 2.5s;
+					animation-direction: alternate;
+					animation-timing-function: ease-in-out;
+					animation-iteration-count: infinite;
+				}
+
 				span {
 					margin: 2pt;
 				}
@@ -65,6 +78,43 @@ div.p {
 		display: none;
 	}
 }
+
+// make text transparent, background clip, background linear gradient with hard stops
+
+@supports (background-clip: text) {
+	// The backing HTML doesn't work for the .links anchors.
+	// The `>` is required because Firefox
+	:not(.links) > a:hover {
+		color: transparent;
+		background-clip: text;
+		background-image: linear-gradient(
+			to right,
+			skyblue, pink, white, pink, skyblue
+		);
+	}
+}
+
+a {
+	// Makes the transform and colour blending seamless where applicable.
+	// Unfortunately 'background-color' is not sufficient to fix an animation.
+	transition: transform 0.2s ease,
+				color 0.2s ease,
+				background-color 0.2s ease;
+}
+
+@keyframes trans {
+	// from intentionally omitted
+	15% {
+		background-color: skyblue;
+	}
+	65% {
+		background-color: pink;
+	}
+	to {
+		background-color: white;
+	}
+}
+
 
 span#the-glitch-fake-icon {
 	color: #0D0;
