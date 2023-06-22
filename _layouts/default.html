@@ -19,14 +19,12 @@
 	{% endfor %}
 </head>
 <body>
-{% if page.url == "/" %}
-<div itemscope itemtype="https://schema.org/WebSite">
-	<meta itemprop="url" content="https://ampflower.gay"/>
-	<meta itemprop="name" content="Ampflower"/>
-</div>
-{% endif %}
-<main>
+	{% if page.url == "/" %}
+	<div itemscope itemtype="https://schema.org/WebSite" aria-hidden="true">
+		<meta itemprop="url" content="https://ampflower.gay"/>
+		<meta itemprop="name" content="Ampflower"/>
+	</div>
+	{% endif %}
 	{{content}}
-</main>
 </body>
 </html>

@@ -4,37 +4,49 @@ title: null
 description: "Converting tea into coffee-based code."
 style: index
 ---
-<div>
-	<img src="https://avatars.githubusercontent.com/u/8528256?0" width="128" height="128"
-		 alt="Ampflower's profile picture"/>
-	<div class="content">
-		<h1>Ampflower 🌺</h1>
-		<p><i>Converting tea into coffee-based code.</i></p>
-	</div>
-</div>
-<div class="links">
-	<a id="the-glitch" href="https://the-glitch.network" title="The Glitch">
-		<!-- aria-hidden is applied to "the-glitch-fake-icon"
-		because accessibility tooling and search engines need not see it-->
-		<span id="the-glitch-fake-icon" aria-hidden="true">TG</span>
-		<span class="omit">The Glitch</span></a>
-	<a id="github" href="https://github.com/Ampflower" title="Ampflower on GitHub">
-		<svg viewBox="0 0 42 41" height="24">
-			<use href="assets/svg/github.svg#github"/>
-		</svg>
-		<span class="omit">GitHub</span></a>
-	<a id="modrinth" href="https://modrinth.com/user/Ampflower" title="Ampflower on Modrinth">
-		<svg viewBox="0 0 512 514" height="24">
-			<use href="assets/svg/modrinth.svg#modrinth"/>
-		</svg>
-		<span class="omit">Modrinth</span></a>
-	<a id="ko-fi" href="https://ko-fi.com/ampflower" title="Ampflower on Ko-Fi">
-		<svg viewBox="0 0 32.56 32.56" height="24">
-			<use href="assets/svg/ko-fi.svg#ko-fi"/>
-		</svg>
-		<span class="omit">Ko-Fi</span></a>
-	<!-- TODO: Include: dev server -->
-</div>
-<div class="p center">
-	Developer of various Minecraft mods &amp; projects on GitHub and Modrinth.
+<div class="card">
+	<header>
+		<img src="https://avatars.githubusercontent.com/u/8528256?0" width="128" height="128"
+			alt="Ampflower's profile picture"/>
+		<div class="title"><h1>Ampflower 🌺</h1></div>
+		<div class="subtitle"><p>Converting tea into coffee-based code.</p></div>
+	</header>
+	<nav class="links">
+		<ul>
+			<li>
+				<a id="the-glitch" href="https://the-glitch.network" title="The Glitch">
+					<span id="the-glitch-fake-icon" role="img" aria-labelledby="the-glitch-label">TG</span>
+					<span class="omit" id="the-glitch-label">The Glitch</span>
+				</a>
+			</li>
+			<li>
+				<a id="github" href="https://github.com/Ampflower" title="Ampflower on GitHub">
+					<svg viewBox="0 0 42 41" height="24" aria-labelledby="github-label">
+						<use href="assets/svg/github.svg#github"/>
+					</svg>
+					<span class="omit" id="github-label">GitHub</span>
+				</a>
+			</li>
+			<li>
+				<a id="modrinth" href="https://modrinth.com/user/Ampflower" title="Ampflower on Modrinth">
+					<svg viewBox="0 0 512 514" height="24" aria-labelledby="modrinth-label">
+						<use href="assets/svg/modrinth.svg#modrinth"/>
+					</svg>
+					<span class="omit" id="modrinth-label">Modrinth</span>
+				</a>
+			</li>
+			<li>
+				<a id="ko-fi" href="https://ko-fi.com/ampflower" title="Ampflower on Ko-Fi">
+					<svg viewBox="0 0 32.56 32.56" height="24" aria-labelledby="kofi-label">
+						<use href="assets/svg/ko-fi.svg#ko-fi"/>
+					</svg>
+					<span class="omit" id="kofi-label">Ko-Fi</span>
+				</a>
+			</li>
+		</ul>
+		<!-- TODO: Include: dev server -->
+	</nav>
+	<main class="p center">
+		Developer of various Minecraft mods &amp; projects on GitHub and Modrinth.
+	</main>
 </div>

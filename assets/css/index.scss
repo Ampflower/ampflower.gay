@@ -1,58 +1,132 @@
 ---
 ---
 
+// TODO: maybe move some of the stuff out of here, like `.card` -- Moxie
+
 @import "brand";
 
-// Colours derived from:
-//  - Cloth: e0a1e1
-//  - Border: 98c46e
+body {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	min-height: 100vh;
+	min-height: 100dvh;
+	font-size: 12pt;
 
-main {
-	position: absolute;
-	top: 50%;
-	transform: translate(0%, -50%);
-	font-family: 'Arial', 'sans-serif';
-	background-color: #d6b8ff;
-	padding: 3px;
-	border: 3px solid #98c46e;
-	border-radius: 18pt;
-	max-width: 320pt;
+	@media screen and (min-width: 260px) {
+		align-items: center;
+	}
 
-	> div {
-		display: flex;
-		justify-content: center;
+	@media screen and (prefers-color-scheme: dark) {
+		background-color: #181720;
+		color: white;
 
-		&.links {
-			flex-flow: wrap;
-			margin: 4pt 0pt;
-
-			a {
-				display: flex;
-				margin: 1pt 2pt;
-				padding: 2pt;
-				align-items: center;
-				border-radius: 8pt;
-
-				&:hover {
-					transform: translateY(-1pt);
-					animation-name: trans;
-
-					// Normally you'd put these in a stateless element,
-					// but CSS doesn't do *anything special* for transforming back.
-					// So, yes, unfortunately, this jumps back regardless.
-					animation-duration: 2.5s;
-					animation-direction: alternate;
-					animation-timing-function: ease-in-out;
-					animation-iteration-count: infinite;
-				}
-
-				span {
-					margin: 2pt;
-				}
+		a {
+			color: #7AF;
+			&:visited {
+				color: #FAF;
 			}
 		}
 	}
 }
+// Colours derived from:
+//  - Cloth: e0a1e1
+//  - Border: 98c46e
+.card {
+	font-family: 'Arial', 'sans-serif';
+	background-color: #d6b8ff;
+	padding: 0.5em;
+	border: 3px solid #98c46e;
+	border-radius: 1em;
+	max-width: 27em;
+
+	box-shadow: 0em 1em 3em -1em black;
+
+	@media screen and (prefers-color-scheme: dark) {
+		background-color: #2f2442;
+		border: 3px solid #32471f;
+	}
+}
+
+
+.card > header {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas:
+		"icon title"
+		"icon subtitle";
+	gap: 1em;
+	margin-bottom: 1em;
+
+	> img {
+		grid-area: icon;
+	}
+
+	> .title, > .subtitle {
+		display: flex;
+		flex-direction: column;
+	}
+
+	> .title {
+		grid-area: title;
+		justify-content: flex-end;
+
+		> h1 {
+			margin-block: 0;
+		}
+	}
+
+	> .subtitle {
+		grid-area: subtitle;
+		font-style: italic;
+		justify-content: center;
+
+		> p {
+			margin-block: 0;
+		}
+	}
+}
+
+nav.links > ul {
+	list-style: none;
+	padding-left: 0;
+	display: flex;
+	flex-flow: wrap;
+	flex-direction: row;
+	justify-content: center;
+
+	flex-flow: wrap;
+	margin: 1em 0pt;
+
+	a {
+		display: flex;
+		margin: 1pt 2pt;
+		padding: 2pt;
+		align-items: center;
+		border-radius: 8pt;
+
+		span {
+			margin: 2pt;
+		}
+
+		&:hover {
+			transform: translateY(-1pt);
+			animation-name: trans;
+
+			// Normally you'd put these in a stateless element,
+			// but CSS doesn't do *anything special* for transforming back.
+			// So, yes, unfortunately, this jumps back regardless.
+			animation-duration: 2.5s;
+			animation-direction: alternate;
+			animation-timing-function: ease-in-out;
+			animation-iteration-count: infinite;
+		}
+	}
+}
+
 
 .center {
 	text-align: center;
@@ -64,13 +138,6 @@ div.p {
 
 .content {
 	margin-left: 8pt;
-}
-
-@media screen and (min-width: 260px) {
-	main {
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
 }
 
 @media screen and (max-width: 640px) {
@@ -115,30 +182,12 @@ a {
 	}
 }
 
-
 span#the-glitch-fake-icon {
 	color: #0D0;
 	margin: auto;
 	font-family: 'System', 'monospace';
 	width: 24px;
 	text-align: center;
-}
-
-@media screen and (prefers-color-scheme: dark) {
-	main {
-		background-color: #2f2442;
-		border: 3px solid #32471f;
-	}
-	body {
-		background-color: #000;
-		color: #FFF;
-	}
-	a {
-		color: #7AF;
-		&:visited {
-			color: #FAF;
-		}
-	}
 }
 
 img {
