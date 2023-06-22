@@ -13,8 +13,11 @@ style: index
 	</div>
 </div>
 <div class="links">
-	<a id="the-glitch" href="https://the-glitch.network" title="The Glitch"><span
-		id="the-glitch-fake-icon">TG</span><span class="omit">The Glitch</span></a>
+	<a id="the-glitch" href="https://the-glitch.network" title="The Glitch">
+		<!-- aria-hidden is applied to "the-glitch-fake-icon"
+		because accessibility tooling and search engines need not see it-->
+		<span id="the-glitch-fake-icon" aria-hidden="true">TG</span>
+		<span class="omit">The Glitch</span></a>
 	<a id="github" href="https://github.com/Ampflower" title="Ampflower on GitHub">
 		<svg viewBox="0 0 42 41" height="24">
 			<use href="assets/svg/github.svg#github"/>
