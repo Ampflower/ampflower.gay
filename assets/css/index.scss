@@ -3,14 +3,18 @@
 
 @import "brand";
 
+// Colours derived from:
+//  - Cloth: e0a1e1
+//  - Border: 98c46e
+
 main {
 	position: absolute;
 	top: 50%;
 	transform: translate(0%, -50%);
 	font-family: 'Arial', 'sans-serif';
-	background-color: #d7e2f4;
+	background-color: #d6b8ff;
 	padding: 3px;
-	border: 3px solid #ebf1fa;
+	border: 3px solid #98c46e;
 	border-radius: 18pt;
 	max-width: 320pt;
 
@@ -72,8 +76,8 @@ span#the-glitch-fake-icon {
 
 @media screen and (prefers-color-scheme: dark) {
 	main {
-		background-color: #030b49;
-		border: 3px solid #010419;
+		background-color: #2f2442;
+		border: 3px solid #32471f;
 	}
 	body {
 		background-color: #000;
