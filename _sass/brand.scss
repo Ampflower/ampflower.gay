@@ -1,10 +1,6 @@
 a#the-glitch {
 	background-color: #EFE;
 	text-decoration: none;
-
-	span.omit {
-		text-decoration: underline;
-	}
 }
 
 a#github {
@@ -21,6 +17,14 @@ a#ko-fi {
 	background-color: #d2eef9;
 }
 
+span#the-glitch-fake-icon {
+	color: #007900;
+	margin: auto;
+	font-family: 'System', 'monospace';
+	width: 24px;
+	text-align: center;
+}
+
 @media screen and (prefers-color-scheme: dark) {
 	a#the-glitch {
 		background-color: #001800;
@@ -35,5 +39,9 @@ a#ko-fi {
 	}
 	a#ko-fi {
 		background-color: #06222d;
+	}
+
+	span#the-glitch-fake-icon {
+		color: #0D0;
 	}
 }

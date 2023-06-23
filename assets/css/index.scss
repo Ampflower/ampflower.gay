@@ -1,6 +1,8 @@
 ---
 ---
 
+$mobile_width: 600px;
+
 // TODO: maybe move some of the stuff out of here, like `.card` -- Moxie
 
 @import "brand";
@@ -14,6 +16,8 @@ body {
 	min-height: 100vh;
 	min-height: 100dvh;
 	font-size: 12pt;
+	z-index: -3;
+	overflow-x: hidden;
 
 	@media screen and (min-width: 260px) {
 		align-items: center;
@@ -31,6 +35,24 @@ body {
 		}
 	}
 }
+
+@mixin card-detached-box-shadow ($border-width: 0px) {
+	position: relative;
+
+	&::before {
+		content: "";
+		display: block;
+		position: absolute;
+		box-sizing: border-box;
+		inset: calc($border-width * -1);
+		background: transparent;
+		z-index: -2;
+		border-radius: inherit;
+		border: $border-width solid transparent;
+		@content;
+	}
+}
+
 // Colours derived from:
 //  - Cloth: e0a1e1
 //  - Border: 98c46e
@@ -40,9 +62,15 @@ body {
 	padding: 0.5em;
 	border: 3px solid #98c46e;
 	border-radius: 1em;
-	max-width: 27em;
+	width: 27em;
+	max-width: 95vw;
+	box-sizing: border-box;
 
-	box-shadow: 0em 1em 3em -1em black;
+	// A small hack to have the box-shadow be on a different z-index,
+	// allowing me to put stuff behind the `.card` but before the box-shadow.
+	@include card-detached-box-shadow(3px) {
+		box-shadow: 0em 1em 3em -1em black;
+	}
 
 	@media screen and (prefers-color-scheme: dark) {
 		background-color: #2f2442;
@@ -50,24 +78,38 @@ body {
 	}
 }
 
-
 .card > header {
 	display: grid;
-	grid-template-columns: max-content 1fr;
-	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 100%;
+	grid-template-rows: max-content 1fr 1fr;
 	grid-template-areas:
-		"icon title"
-		"icon subtitle";
-	gap: 1em;
+		"icon"
+		"title"
+		"subtitle";
 	margin-bottom: 1em;
+
+	@media screen and (min-width: $mobile_width) {
+		grid-template-columns: max-content 1fr;
+		grid-template-rows: 1fr 1fr;
+		grid-template-areas:
+			"icon title"
+			"icon subtitle";
+		gap: 1em;
+	}
 
 	> img {
 		grid-area: icon;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	> .title, > .subtitle {
+		text-align: center;
 		display: flex;
 		flex-direction: column;
+		@media screen and (min-width: $mobile_width) {
+			text-align: left;
+		}
 	}
 
 	> .title {
@@ -88,6 +130,10 @@ body {
 			margin-block: 0;
 		}
 	}
+
+	main {
+		margin: 0.25em 0.25em;
+	}
 }
 
 nav.links > ul {
@@ -97,6 +143,7 @@ nav.links > ul {
 	flex-flow: wrap;
 	flex-direction: row;
 	justify-content: center;
+	gap: 1em;
 
 	flex-flow: wrap;
 	margin: 1em 0pt;
@@ -104,17 +151,26 @@ nav.links > ul {
 	a {
 		display: flex;
 		margin: 1pt 2pt;
-		padding: 2pt;
+		padding: 0.5em;
 		align-items: center;
 		border-radius: 8pt;
+		outline: 2px solid transparent;
+		box-shadow: 0 0.25em 0.5em -0.25em rgba(0, 0, 0, 0.15);
+		text-decoration: none;
+		transition: outline-color 0.2s;
 
 		span {
 			margin: 2pt;
 		}
 
-		&:hover {
-			transform: translateY(-1pt);
-			animation-name: trans;
+		&:hover, &:focus {
+			span:not([aria-labelledby]) {
+				text-decoration: underline;
+			}
+
+			// transform: translateY(-1pt);
+			outline: 2px solid black;
+			animation-name: trans-background;
 
 			// Normally you'd put these in a stateless element,
 			// but CSS doesn't do *anything special* for transforming back.
@@ -123,7 +179,31 @@ nav.links > ul {
 			animation-direction: alternate;
 			animation-timing-function: ease-in-out;
 			animation-iteration-count: infinite;
+
+			@media screen and (prefers-color-scheme: dark) {
+				animation-name: trans-outline;
+			}
 		}
+
+		@media screen and (min-width: $mobile_width) {
+			padding: 2pt;
+		}
+	}
+
+	.omit {
+		display: none;
+
+		@media screen and (min-width: $mobile_width) {
+			display: inline-block;
+		}
+	}
+
+	img {
+		border-radius: 16pt;
+	}
+
+	@media screen and (min-width: $mobile_width) {
+		gap: 0;
 	}
 }
 
@@ -132,44 +212,45 @@ nav.links > ul {
 	text-align: center;
 }
 
-div.p {
-	margin: 4pt 3pt;
-}
-
 .content {
 	margin-left: 8pt;
 }
 
-@media screen and (max-width: 640px) {
-	.omit {
-		display: none;
-	}
-}
-
 // make text transparent, background clip, background linear gradient with hard stops
-
-@supports (background-clip: text) {
-	// The backing HTML doesn't work for the .links anchors.
-	// The `>` is required because Firefox
-	:not(.links) > a:hover {
-		color: transparent;
-		background-clip: text;
-		background-image: linear-gradient(
-			to right,
-			skyblue, pink, white, pink, skyblue
-		);
-	}
-}
-
-a {
+a.trans {
 	// Makes the transform and colour blending seamless where applicable.
 	// Unfortunately 'background-color' is not sufficient to fix an animation.
 	transition: transform 0.2s ease,
 				color 0.2s ease,
 				background-color 0.2s ease;
+
+	@supports (background-clip: text) {
+		&:hover {
+			color: transparent;
+			background-clip: text;
+			background-image: linear-gradient(
+				to right,
+				skyblue, pink, white, pink, skyblue
+			);
+		}
+	}
 }
 
-@keyframes trans {
+
+@keyframes trans-outline {
+	// from intentionally omitted
+	15% {
+		outline-color: skyblue;
+	}
+	65% {
+		outline-color: pink;
+	}
+	to {
+		outline-color: white;
+	}
+}
+
+@keyframes trans-background {
 	// from intentionally omitted
 	15% {
 		background-color: skyblue;
@@ -180,16 +261,4 @@ a {
 	to {
 		background-color: white;
 	}
-}
-
-span#the-glitch-fake-icon {
-	color: #0D0;
-	margin: auto;
-	font-family: 'System', 'monospace';
-	width: 24px;
-	text-align: center;
-}
-
-img {
-	border-radius: 16pt;
 }
