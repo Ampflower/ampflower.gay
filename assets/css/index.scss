@@ -262,3 +262,39 @@ a.trans {
 		background-color: white;
 	}
 }
+
+#hibiscus-decorations {
+	img {
+		position: absolute;
+		z-index: -1;
+		--rotation: 0;
+		--delay: 0s;
+		--duration: 2s;
+		transform: rotate(calc(var(--rotation) * 90deg));
+		animation: var(--duration) ease-in-out infinite var(--delay) alternate hibiscus;
+
+		display: none;
+
+		@media screen {
+			&.hibiscus-top, &.hibiscus-bottom {
+				display: block;
+			}
+		}
+
+		@media screen and (min-width: $mobile_width) {
+			&.hibiscus-left, &.hibiscus-right {
+				display: block;
+			}
+		}
+	}
+}
+
+@keyframes hibiscus {
+	0% {
+		transform: rotate(calc(var(--rotation) * 90deg - 45deg));
+	}
+
+	100% {
+		transform: rotate(calc(var(--rotation) * 90deg + 45deg));
+	}
+}
