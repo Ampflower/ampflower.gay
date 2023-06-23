@@ -17,6 +17,9 @@
 	{% for style in page.styles %}
 	<link rel="stylesheet" href="/assets/css/{{style}}.css"/>
 	{% endfor %}
+	{% for script in page.deferred %}
+	<script src="{{script}}" defer></script>
+	{% endfor %}
 </head>
 <body>
 	{% if page.url == "/" %}
