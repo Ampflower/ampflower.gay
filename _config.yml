@@ -1,6 +1,7 @@
 exclude:
   - CNAME
   - LICENSE
+  - "README*"
 
 defaults:
   - scope:
@@ -12,3 +13,6 @@ defaults:
 plugins:
   - jekyll-optional-front-matter
   - jekyll-titles-from-headings
+
+optional_front_matter:
+  remove_originals: true
