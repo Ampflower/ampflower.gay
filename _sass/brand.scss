@@ -1,47 +1,41 @@
-a#the-glitch {
-	background-color: #EFE;
-	text-decoration: none;
+@use "sass:meta";
+@use "sass:list";
+
+@mixin branded-link($name, $args, $offset) {
+	a##{$name} {
+		@if list.length($args) > 3 {
+	        --#{$name}-branding: #{list.nth($args, 3 + $offset)};
+		}
+		background-color: list.nth($args, 1 + $offset);
+	}
 }
 
-a#github {
-	--github-branding: #1b1817;
-	background-color: #FFF;
+@mixin branded-links($args...) {
+	@each $name, $list in meta.keywords($args) {
+		@include branded-link($name, $list, 0);
+	}
+
+	@media screen and (prefers-color-scheme: dark) {
+		@each $name, $list in meta.keywords($args) {
+			@include branded-link($name, $list, 1);
+		}
+	}
 }
 
-a#modrinth {
-	--modrinth-branding: #0abf71;
-	background-color: #DFFFEF;
-}
-
-a#ko-fi {
-	background-color: #d2eef9;
-}
+// light, dark, branding-light, branding-dark
+@include branded-links(
+	$github: (#FFF, #1b1817, #1b1817, #FFF),
+    $modrinth: (#DFFFEF, #01180a, #0abf71, #1DD76A),
+    $ko-fi: (#d2eef9, #06222d),
+    $blobfox-coffee: (#ffc999, #331800),
+    $the-glitch: (#EEFFEE, #001800, #007900, #00DD00),
+    $pridecraft: (#FFEEFF, #180018),
+);
 
 span#the-glitch-fake-icon {
-	color: #007900;
+	color: var(--the-glitch-branding);
 	margin: auto;
 	font-family: 'System', 'monospace';
 	width: 24px;
 	text-align: center;
-}
-
-@media screen and (prefers-color-scheme: dark) {
-	a#the-glitch {
-		background-color: #001800;
-	}
-	a#github {
-		--github-branding: #FFF;
-		background-color: #1b1817;
-	}
-	a#modrinth {
-		--modrinth-branding: #1DD76A;
-		background-color: #01180a;
-	}
-	a#ko-fi {
-		background-color: #06222d;
-	}
-
-	span#the-glitch-fake-icon {
-		color: #0D0;
-	}
 }
