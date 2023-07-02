@@ -1,7 +1,7 @@
 ---
 ---
 
-$mobile_width: 600px;
+$mobile_width: 460px;
 
 // TODO: maybe move some of the stuff out of here, like `.card` -- Moxie
 
@@ -150,7 +150,7 @@ nav.links > ul {
 
 	a {
 		display: flex;
-		margin: 1pt 2pt;
+		margin: 2pt;
 		padding: 0.5em;
 		align-items: center;
 		border-radius: 8pt;
@@ -200,6 +200,10 @@ nav.links > ul {
 
 	img {
 		border-radius: 16pt;
+	}
+
+	img, svg {
+		max-width: 24px;
 	}
 
 	@media screen and (min-width: $mobile_width) {
