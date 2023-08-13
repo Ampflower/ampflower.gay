@@ -268,7 +268,7 @@ a.trans {
 }
 
 #hibiscus-decorations {
-	img {
+	svg {
 		position: absolute;
 		z-index: -1;
 		--rotation: 0;
@@ -289,6 +289,18 @@ a.trans {
 			&.hibiscus-left, &.hibiscus-right {
 				display: block;
 			}
+		}
+
+		&.blue {
+			--hibiscus-outer: #5BCEFA;
+            --hibiscus-inner: #5985EA;
+            --hibiscus-stem: #1947BE;
+		}
+
+		&.white {
+			--hibiscus-outer: #E4E4E4;
+            --hibiscus-inner: #AFADA8;
+            --hibiscus-stem: #5B594E;
 		}
 	}
 }

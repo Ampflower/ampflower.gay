@@ -3,11 +3,7 @@
 
 const imageSize = 32;
 const container = document.getElementById("hibiscus-decorations");
-const paths = [
-	"/assets/svg/hibiscus.svg",
-	"/assets/svg/hibiscus-blue.svg",
-	"/assets/svg/hibiscus-white.svg"
-];
+const types = ['pink', 'blue', 'white']
 const orthogonalSide = {
 	top: "left",
 	bottom: "left",
@@ -51,13 +47,17 @@ for (let n = 0; n < 25; n++) {
 }
 
 for (const [side, distance, orthogonalDistance] of coordinates) {
-	const element = document.createElement("img");
+	const element = document.createElementNS('http://www.w3.org/2000/svg', "svg");
+	element.setAttribute('viewBox', '0 0 36 36')
 
-	element.src = paths[Math.floor(Math.random() * paths.length)];
+	const subElement = document.createElementNS('http://www.w3.org/2000/svg', "use");
+	subElement.setAttribute('href', 'assets/svg/hibiscus.svg#hibiscus')
+	element.appendChild(subElement)
+
 	const size = imageSize * (0.5 * Math.random() + 0.5);
-	element.width = size;
-	element.height = size;
-	element.className = `hibiscus-${side}`;
+	element.setAttribute('width', size);
+	element.setAttribute('height', size);
+	element.classList = `hibiscus-${side} ${types[Math.floor(Math.random() * types.length)]}`
 	element.style[side] = `-${distance}px`;
 	element.style[orthogonalSide[side]] = `${orthogonalDistance * 90}%`;
 	element.style.setProperty("--rotation", Math.floor(Math.random() * 4).toString());
