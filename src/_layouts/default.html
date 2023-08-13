@@ -11,14 +11,11 @@
 	<meta property="og:image" content="https://avatars.githubusercontent.com/u/8528256?0"/>
 	<meta property="og:site_name" content="Ampflower"/>
 	<link type="application/json+oembed" href="https://ampflower.gay/oembed.json"/>
-	{% if page.style %}
-	<link rel="stylesheet" href="/assets/css/{{page.style}}.css"/>
-	{% endif %}
 	{% for style in page.styles %}
 	<link rel="stylesheet" href="/assets/css/{{style}}.css"/>
 	{% endfor %}
 	{% for script in page.deferred %}
-	<script src="{{script}}" defer></script>
+	<script src="/assets/js/{{script}}.js" defer></script>
 	{% endfor %}
 </head>
 <body>
