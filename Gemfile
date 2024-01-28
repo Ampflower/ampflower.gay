@@ -9,3 +9,5 @@ gem "jekyll-titles-from-headings"
 group :jekyll_plugins do
   gem 'jekyll-optional-front-matter'
 end
+
+gem "json", "~> 2.7"
