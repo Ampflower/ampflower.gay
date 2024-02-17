@@ -241,6 +241,14 @@ a.trans {
 	}
 }
 
+// Custom highlight colours
+::selection {
+	background-color: oklch(88.69% 0.061 130.95);
+	color: oklch(45.15% 0.078 326.06);
+	@media screen and (prefers-color-scheme: dark) {
+		background-color: oklch(82.78% 0.092 130.95);
+	}
+}
 
 @keyframes trans-outline {
 	// from intentionally omitted
