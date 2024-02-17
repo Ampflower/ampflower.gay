@@ -8,7 +8,7 @@ $mobile_width: 460px;
 @import "brand";
 
 body {
-	background-color: oklch(98.5% 0.085 303.59);
+	background-color: oklch(95% 0.085 326.06);
 	margin: 0;
 	display: flex;
 	flex-direction: column;
@@ -59,7 +59,7 @@ body {
 //  - Border: 98c46e
 .card {
 	font-family: 'Arial', 'sans-serif';
-	background-color: oklch(82.25% 0.086 326.06);
+	background-color: oklch(82.25% 0.102 303.59);
 	padding: 0.5em;
 	border: 3px solid #98c46e;
 	border-radius: 1em;
@@ -74,7 +74,7 @@ body {
 	}
 
 	@media screen and (prefers-color-scheme: dark) {
-		background-color: oklch(27.5% 0.065 326.06);
+		background-color: oklch(27.5% 0.065 299.85);
 		border: 3px solid oklch(37% 0.124 130.95);
 	}
 }
