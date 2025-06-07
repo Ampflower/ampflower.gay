@@ -1,0 +1,71 @@
+@use "sass:color";
+@use "main";
+
+@mixin hibiscus-color($name, $color) {
+	&.#{$name} {
+		--hibiscus-outer: #{$color};
+        --hibiscus-inner: #{color.adjust($color, $lightness: -15%, $chroma: +9%, $space: oklch)};
+        --hibiscus-stem: #{color.adjust($color, $lightness: -30%, $chroma: +18%, $space: oklch)};
+	}
+}
+
+#hibiscus-decorations {
+	svg {
+		position: absolute;
+		z-index: -1;
+		--rotation: 0;
+		--delay: 0s;
+		--duration: 2s;
+		transform: rotate(calc(var(--rotation) * 90deg));
+		animation: var(--duration) ease-in-out infinite var(--delay) alternate hibiscus;
+
+		display: none;
+
+		@media screen {
+			&.hibiscus-top, &.hibiscus-bottom {
+				display: block;
+			}
+		}
+
+		@media screen and (min-width: main.$mobile_width) {
+			&.hibiscus-left, &.hibiscus-right {
+				display: block;
+			}
+		}
+
+		&.blue {
+			--hibiscus-outer: #5BCEFA;
+            --hibiscus-inner: #5985EA;
+            --hibiscus-stem: #1947BE;
+		}
+
+		&.white {
+			--hibiscus-outer: #E4E4E4;
+            --hibiscus-inner: #AFADA8;
+            --hibiscus-stem: #5B594E;
+		}
+
+		@include hibiscus-color(black, #222222);
+
+		// Lesbian-specific
+		@include hibiscus-color(dark-orange, #D52D00);
+		@include hibiscus-color(light-orange, #FF8A56);
+		@include hibiscus-color(light-purple, #D362A4);
+		@include hibiscus-color(dark-purple, #A30262);
+
+		// Plural-speciifc
+		@include hibiscus-color(mystery, #6B3FBC);
+		@include hibiscus-color(trust, #347DDE);
+		@include hibiscus-color(harmony, #31C69E);
+	}
+}
+
+@keyframes hibiscus {
+	0% {
+		transform: rotate(calc(var(--rotation) * 90deg - 45deg));
+	}
+
+	100% {
+		transform: rotate(calc(var(--rotation) * 90deg + 45deg));
+	}
+}

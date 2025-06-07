@@ -1,14 +1,13 @@
 ---
 ---
 
-$mobile_width: 460px;
-
 // TODO: maybe move some of the stuff out of here, like `.card` -- Moxie
 
-@import "brand";
+@use "main";
+@use "brand";
+@use "hibiscus";
 
 body {
-	background-color: oklch(95% 0.085 326.06);
 	margin: 0;
 	display: flex;
 	flex-direction: column;
@@ -22,18 +21,6 @@ body {
 
 	@media screen and (min-width: 260px) {
 		align-items: center;
-	}
-
-	@media screen and (prefers-color-scheme: dark) {
-		background-color: oklch(17.5% 0.025 326.06);
-		color: white;
-
-		a {
-			color: #7AF;
-			&:visited {
-				color: #FAF;
-			}
-		}
 	}
 }
 
@@ -89,7 +76,7 @@ body {
 		"subtitle";
 	margin-bottom: 1em;
 
-	@media screen and (min-width: $mobile_width) {
+	@media screen and (min-width: main.$mobile_width) {
 		grid-template-columns: max-content 1fr;
 		grid-template-rows: 1fr 1fr;
 		grid-template-areas:
@@ -108,7 +95,7 @@ body {
 		text-align: center;
 		display: flex;
 		flex-direction: column;
-		@media screen and (min-width: $mobile_width) {
+		@media screen and (min-width: main.$mobile_width) {
 			text-align: left;
 		}
 	}
@@ -186,7 +173,7 @@ nav.links > ul {
 			}
 		}
 
-		@media screen and (min-width: $mobile_width) {
+		@media screen and (min-width: main.$mobile_width) {
 			padding: 2pt;
 		}
 	}
@@ -194,7 +181,7 @@ nav.links > ul {
 	.omit {
 		display: none;
 
-		@media screen and (min-width: $mobile_width) {
+		@media screen and (min-width: main.$mobile_width) {
 			display: inline-block;
 		}
 	}
@@ -207,7 +194,7 @@ nav.links > ul {
 		max-width: 24px;
 	}
 
-	@media screen and (min-width: $mobile_width) {
+	@media screen and (min-width: main.$mobile_width) {
 		gap: 0;
 	}
 }
@@ -273,53 +260,5 @@ a.trans {
 	}
 	to {
 		background-color: white;
-	}
-}
-
-#hibiscus-decorations {
-	svg {
-		position: absolute;
-		z-index: -1;
-		--rotation: 0;
-		--delay: 0s;
-		--duration: 2s;
-		transform: rotate(calc(var(--rotation) * 90deg));
-		animation: var(--duration) ease-in-out infinite var(--delay) alternate hibiscus;
-
-		display: none;
-
-		@media screen {
-			&.hibiscus-top, &.hibiscus-bottom {
-				display: block;
-			}
-		}
-
-		@media screen and (min-width: $mobile_width) {
-			&.hibiscus-left, &.hibiscus-right {
-				display: block;
-			}
-		}
-
-		&.blue {
-			--hibiscus-outer: #5BCEFA;
-            --hibiscus-inner: #5985EA;
-            --hibiscus-stem: #1947BE;
-		}
-
-		&.white {
-			--hibiscus-outer: #E4E4E4;
-            --hibiscus-inner: #AFADA8;
-            --hibiscus-stem: #5B594E;
-		}
-	}
-}
-
-@keyframes hibiscus {
-	0% {
-		transform: rotate(calc(var(--rotation) * 90deg - 45deg));
-	}
-
-	100% {
-		transform: rotate(calc(var(--rotation) * 90deg + 45deg));
 	}
 }

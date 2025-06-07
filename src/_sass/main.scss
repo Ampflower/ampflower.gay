@@ -1,0 +1,17 @@
+$mobile_width: 460px;
+
+:root {
+	background-color: oklch(95% 0.085 326.06);
+
+	@media screen and (prefers-color-scheme: dark) {
+		background-color: oklch(17.5% 0.025 326.06);
+		color: white;
+
+		a {
+			color: #7AF;
+			&:visited {
+				color: #FAF;
+			}
+		}
+	}
+}

@@ -1,9 +1,21 @@
 // Randomly scatter hibiscus decorations.
 // This could probably be moved to the backend, but I don't know enough jekyll to do that - Moxie
 
+function nextInt(i) {
+	return Math.floor(Math.random() * i);
+}
+function nextEntry(l) {
+	return l[nextInt(l.length)];
+}
+
 const imageSize = 32;
 const container = document.getElementById("hibiscus-decorations");
-const types = ['pink', 'blue', 'white']
+const typesList = [
+	['pink', 'blue', 'white'], // trans
+	['dark-orange', 'light-orange', 'white', 'light-purple', 'dark-purple'], // lesbian
+	['mystery', 'trust', 'harmony', 'black'], // plural; journey
+];
+const types = nextEntry(typesList);
 const orthogonalSide = {
 	top: "left",
 	bottom: "left",
@@ -57,10 +69,10 @@ for (const [side, distance, orthogonalDistance] of coordinates) {
 	const size = imageSize * (0.5 * Math.random() + 0.5);
 	element.setAttribute('width', size);
 	element.setAttribute('height', size);
-	element.classList = `hibiscus-${side} ${types[Math.floor(Math.random() * types.length)]}`
+	element.classList = `hibiscus-${side} ${nextEntry(types)}`
 	element.style[side] = `-${distance}px`;
 	element.style[orthogonalSide[side]] = `${orthogonalDistance * 90}%`;
-	element.style.setProperty("--rotation", Math.floor(Math.random() * 4).toString());
+	element.style.setProperty("--rotation", nextInt(4).toString());
 	const duration = Math.random() * 2 + 2;
 	element.style.setProperty("--duration", `${duration}s`);
 	element.style.setProperty("--delay", `${-Math.random() * duration}s`);
