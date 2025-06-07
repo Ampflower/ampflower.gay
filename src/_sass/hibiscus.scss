@@ -45,18 +45,18 @@
             --hibiscus-stem: #5B594E;
 		}
 
-		@include hibiscus-color(black, #222222);
+		@include hibiscus-color("black", #222222);
 
 		// Lesbian-specific
-		@include hibiscus-color(dark-orange, #D52D00);
-		@include hibiscus-color(light-orange, #FF8A56);
-		@include hibiscus-color(light-purple, #D362A4);
-		@include hibiscus-color(dark-purple, #A30262);
+		@include hibiscus-color("dark-orange", #D52D00);
+		@include hibiscus-color("light-orange", #FF8A56);
+		@include hibiscus-color("light-purple", #D362A4);
+		@include hibiscus-color("dark-purple", #A30262);
 
 		// Plural-speciifc
-		@include hibiscus-color(mystery, #6B3FBC);
-		@include hibiscus-color(trust, #347DDE);
-		@include hibiscus-color(harmony, #31C69E);
+		@include hibiscus-color("mystery", #6B3FBC);
+		@include hibiscus-color("trust", #347DDE);
+		@include hibiscus-color("harmony", #31C69E);
 	}
 }
 
