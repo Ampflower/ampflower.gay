@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "main";
+@use "vars";
 
 @mixin hibiscus-color($name, $color) {
 	&.#{$name} {
@@ -27,7 +27,7 @@
 			}
 		}
 
-		@media screen and (min-width: main.$mobile_width) {
+		@media screen and (min-width: vars.$mobile_width) {
 			&.hibiscus-left, &.hibiscus-right {
 				display: block;
 			}

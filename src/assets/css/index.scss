@@ -3,7 +3,7 @@
 
 // TODO: maybe move some of the stuff out of here, like `.card` -- Moxie
 
-@use "main";
+@use "vars";
 @use "brand";
 @use "hibiscus";
 
@@ -76,7 +76,7 @@ body {
 		"subtitle";
 	margin-bottom: 1em;
 
-	@media screen and (min-width: main.$mobile_width) {
+	@media screen and (min-width: vars.$mobile_width) {
 		grid-template-columns: max-content 1fr;
 		grid-template-rows: 1fr 1fr;
 		grid-template-areas:
@@ -95,7 +95,7 @@ body {
 		text-align: center;
 		display: flex;
 		flex-direction: column;
-		@media screen and (min-width: main.$mobile_width) {
+		@media screen and (min-width: vars.$mobile_width) {
 			text-align: left;
 		}
 	}
@@ -173,7 +173,7 @@ nav.links > ul {
 			}
 		}
 
-		@media screen and (min-width: main.$mobile_width) {
+		@media screen and (min-width: vars.$mobile_width) {
 			padding: 2pt;
 		}
 	}
@@ -181,7 +181,7 @@ nav.links > ul {
 	.omit {
 		display: none;
 
-		@media screen and (min-width: main.$mobile_width) {
+		@media screen and (min-width: vars.$mobile_width) {
 			display: inline-block;
 		}
 	}
@@ -194,7 +194,7 @@ nav.links > ul {
 		max-width: 24px;
 	}
 
-	@media screen and (min-width: main.$mobile_width) {
+	@media screen and (min-width: vars.$mobile_width) {
 		gap: 0;
 	}
 }
@@ -225,15 +225,6 @@ a.trans {
 				skyblue, pink, white, pink, skyblue
 			);
 		}
-	}
-}
-
-// Custom highlight colours
-::selection {
-	background-color: oklch(88.69% 0.061 130.95);
-	color: oklch(45.15% 0.078 326.06);
-	@media screen and (prefers-color-scheme: dark) {
-		background-color: oklch(82.78% 0.092 130.95);
 	}
 }
 

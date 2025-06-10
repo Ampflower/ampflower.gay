@@ -18,6 +18,9 @@
 	{% for script in page.deferred %}
 	<script src="/assets/js/{{script}}.js" defer></script>
 	{% endfor %}
+	{% for script in page.modules %}
+	<script src="/assets/js/{{script}}.js" type="module"></script>
+	{% endfor %}
 </head>
 <body>
 	{% if page.url == "/" %}
