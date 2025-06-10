@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "vars";
 
 @mixin hibiscus-color($name, $color) {
 	&.#{$name} {
@@ -12,7 +11,8 @@
 #hibiscus-decorations {
 	svg {
 		position: absolute;
-		z-index: -1;
+		--dx: 0;
+		--dy: 0;
 		--rotation: 0;
 		--delay: 0s;
 		--duration: 2s;
@@ -22,15 +22,24 @@
 		display: none;
 
 		@media screen {
-			&.hibiscus-top, &.hibiscus-bottom {
-				display: block;
-			}
+			display: block;
 		}
 
-		@media screen and (min-width: vars.$mobile_width) {
-			&.hibiscus-left, &.hibiscus-right {
-				display: block;
-			}
+		&.hibiscus-top {
+			top:  calc(var(--dy) * +1px + var(--x));
+			left: calc(var(--dx) * +1px + var(--y));
+		}
+		&.hibiscus-bottom {
+			bottom: calc(var(--dy) * -1px + var(--x));
+			left:   calc(var(--dx) * +1px + var(--y));
+		}
+		&.hibiscus-left {
+			top:  calc(var(--dy) * +1px + var(--y));
+			left: calc(var(--dx) * +1px + var(--x));
+		}
+		&.hibiscus-right {
+			top:   calc(var(--dy) * +1px + var(--y));
+			right: calc(var(--dx) * -1px + var(--x));
 		}
 
 		&.blue {

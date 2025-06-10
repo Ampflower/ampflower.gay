@@ -1,3 +1,5 @@
+import physics from "./physics.js";
+
 // Randomly scatter hibiscus decorations.
 // This could probably be moved to the backend, but I don't know enough jekyll to do that - Moxie
 
@@ -66,12 +68,12 @@ for (const [side, distance, orthogonalDistance] of coordinates) {
 	subElement.setAttribute('href', 'assets/svg/hibiscus.svg#hibiscus')
 	element.appendChild(subElement)
 
-	const size = imageSize * (0.5 * Math.random() + 0.5);
+	const size = imageSize * (1.5 * Math.random() + 0.5);
 	element.setAttribute('width', size);
 	element.setAttribute('height', size);
 	element.classList = `hibiscus-${side} ${nextEntry(types)}`
-	element.style[side] = `-${distance}px`;
-	element.style[orthogonalSide[side]] = `${orthogonalDistance * 90}%`;
+	element.style.setProperty("--x", `-${distance}px`);
+	element.style.setProperty("--y", `${orthogonalDistance * 90}%`);
 	element.style.setProperty("--rotation", nextInt(4).toString());
 	const duration = Math.random() * 2 + 2;
 	element.style.setProperty("--duration", `${duration}s`);
@@ -79,3 +81,5 @@ for (const [side, distance, orthogonalDistance] of coordinates) {
 
 	container.appendChild(element);
 }
+
+physics(container);
