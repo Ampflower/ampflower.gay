@@ -82,8 +82,6 @@ function reversiClamp(ani, root, move, dx, dy) {
 		ani.dy = ani.dy * -0.75;
 	}
 
-	console.log(ani, w, h, ddx, ddy);
-
 	return [dx, dy];
 }
 
@@ -111,8 +109,6 @@ function tick(timestamp) {
 		const ddx = (Math.sign(ani.dx) * ani.dx * ani.dx * c) + ldx;
 		const ddy = (Math.sign(ani.dy) * ani.dy * ani.dy * c) + ldy;
 
-		// console.log(ani, c, ddx, ddy);
-
 		ani.dx -= ddx;
 		ani.dy -= ddy;
 
@@ -125,8 +121,6 @@ function tick(timestamp) {
 		const cy = (+style.getPropertyValue("--dy") || 0) + ani.dy;
 
 		let r = reversiClamp(ani, document, element, cx, cy);
-
-		// console.log(ani, cx, cy, r);
 
 		style.setProperty("--dx", r[0]);
 		style.setProperty("--dy", r[1]);
@@ -217,7 +211,6 @@ export function mouseover(event) {
 
 /** @param {HTMLElement} animate */
 export default function(animate) {
-	console.trace("Setting to animate", animate);
 	animate.dataset.animationParent = "true";
 	animate.addEventListener("mouseover", mouseover);
 	animate.addEventListener("mousemove", mouseover);
