@@ -17,7 +17,7 @@ class Ani {
 	 * @param {number} dx The delta of X
 	 * @param {number} dy The delta of Y
 	 */
-	constructor(element, dx, dy) {
+	constructor(element, dx = 0, dy = 0) {
 		this._element = element;
 		this.dx = dx;
 		this.dy = dy;
@@ -30,6 +30,8 @@ class Ani {
 
 /** @type {Set<HTMLElement>} */
 let animationParents = new Set();
+/** @type {Set<HTMLElement>} */
+const draggedElements = new Set();
 /** @type {Ani[]} */
 let animated = [];
 /** @type {Map<HTMLElement, Ani>} */
@@ -38,14 +40,21 @@ const aniMap = new Map();
 const aniTouch = new Set();
 /** @type {MouseEvent} */
 let lastEvent;
-let ldx, ldy, lt;
+let ldx, ldy, pdx, pdy, lt;
 /** @type {number} */
 let zoom = 1/(window.devicePixelRatio || 1);
 
 document.addEventListener("mousemove", event => {
+	pdx = ldx;
+	pdy = ldy;
 	ldx = event.movementX;
 	ldy = event.movementY;
-	lastEvent = event
+	lastEvent = event;
+
+	for (const k of draggedElements) {
+		const r = reversiClamp(new Ani(k, ldx, ldy), k, ldx, ldy);
+		bump(k, r[0], r[1]);
+	}
 });
 
 /**
@@ -139,16 +148,21 @@ function tick(timestamp) {
 
 		const element = ani.element;
 
+		if (element.dataset.dragged === "true") {
+			aniMap.delete(element);
+			return false;
+		}
+
 		const w = +(element.getAttribute("width") || 1);
 		const h = +(element.getAttribute("height") || 1);
 
-		const c = (1 / (0.0005 * w * h)) * fifteenth;
+		const adx = ani.dx, sdx = Math.sign(adx);
+		const ady = ani.dy, sdy = Math.sign(ady);
 
-		const adx = ani.dx;
-		const ady = ani.dy;
+		const c = (1 / (0.5 * w * h)) * fifteenth;
 
-		const ddx = (Math.sign(ani.dx) * ani.dx * ani.dx * c) + (ani.dx * 0.15 * fifteenth);
-		const ddy = (Math.sign(ani.dy) * ani.dy * ani.dy * c) + (ani.dy * 0.15 * fifteenth);
+		const ddx = (sdx * adx * adx * c) + (adx * 0.15 * fifteenth);
+		const ddy = (sdy * ady * ady * c) + (ady * 0.15 * fifteenth);
 
 		ani.dx -= ddx * step;
 		ani.dy -= ddy * step;
@@ -181,7 +195,7 @@ function tick(timestamp) {
  * @param {number} dy
  * @param {number} c constant multiplier
  */
-function animate(element, dx, dy, c = 0.25) {
+function animate(element, dx, dy, c) {
 	if (aniTouch.has(element)) {
 		return;
 	}
@@ -227,22 +241,65 @@ function findSvgElseSelf(element) {
 	return self;
 }
 
-/**
- * @param {MouseEvent} event
- */
-export function mouseover(event) {
+function getTarget(event) {
 	/** @type {HTMLElement} */
 	const target = event.target;
 
 	if (target.tagName === "svg") {
-		return;
+		return undefined;
 	}
 
-	if (target.dataset.animationParent === "true") {
-		return;
+	if (animationParents.has(target)) {
+		return undefined;
 	}
 
-	animate(findSvgElseSelf(target), ldx, ldy);
+	return findSvgElseSelf(target);
+}
+
+/**
+ * @param {MouseEvent} event
+ */
+export function mouseover(event) {
+	const target = getTarget(event);
+
+	if (target) {
+		animate(findSvgElseSelf(target), ldx, ldy, 0.25);
+	}
+}
+
+/**
+ * @param {MouseEvent} event
+ */
+export function mousedown(event) {
+	const target = getTarget(event);
+
+	if (target) {
+		event.preventDefault();
+		aniTouch.add(target);
+		target.dataset.dragged = "true"
+		draggedElements.add(target);
+	}
+}
+
+/**
+ * @param {MouseEvent} event
+ */
+export function mouseup(event) {
+	const dx = pdx + ldx;
+	const dy = pdy + ldy;
+
+	const flag = animated.length == 0 && draggedElements.length != 0;
+
+	const arr = [...draggedElements];
+	draggedElements.clear();
+	aniTouch.clear();
+	for (const k of arr) {
+		k.dataset.dragged = "false"
+		animate(k, dx, dy, 1);
+	}
+	if (flag) {
+		requestAnimationFrame(tick);
+	}
 }
 
 /** @param {HTMLElement} animate */
@@ -251,4 +308,7 @@ export default function(animate) {
 	animationParents.add(animate);
 	animate.addEventListener("mouseover", mouseover);
 	animate.addEventListener("mousemove", mouseover);
+	animate.addEventListener("mousedown", mousedown);
 }
+
+window.addEventListener("mouseup", mouseup);
