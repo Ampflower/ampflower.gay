@@ -1,7 +1,7 @@
 "use strict";
 
 class Ani {
-	/** 
+	/**
 	 * @private
 	 * @readonly
 	 * @type {HTMLElement}
@@ -28,6 +28,8 @@ class Ani {
 	}
 }
 
+/** @type {Set<HTMLElement>} */
+let animationParents = new Set();
 /** @type {Ani[]} */
 let animated = [];
 /** @type {Map<HTMLElement, Ani>} */
@@ -37,6 +39,8 @@ const aniTouch = new Set();
 /** @type {MouseEvent} */
 let lastEvent;
 let ldx, ldy, lt;
+/** @type {number} */
+let zoom = 1/(window.devicePixelRatio || 1);
 
 document.addEventListener("mousemove", event => {
 	ldx = event.movementX;
@@ -45,49 +49,86 @@ document.addEventListener("mousemove", event => {
 });
 
 /**
+ * @param {number} pos
+ * @param {number} length
+ * @param {number} windowLength
+ */
+function correctDelta(pos, length, windowLength) {
+	const a = pos + length;
+	return pos < 0 ? -pos : a > windowLength ? windowLength - a : 0;
+}
+
+/**
+ * @param {HTMLElement} element
+ * @param {number} dx
+ * @param {number} dy
+ */
+function bump(element, dx, dy) {
+	const style = element.style;
+
+	const cx = (+style.getPropertyValue("--dx") || 0) + dx;
+	const cy = (+style.getPropertyValue("--dy") || 0) + dy;
+
+	style.setProperty("--dx", cx);
+	style.setProperty("--dy", cy);
+}
+
+window.addEventListener("resize", (_) => {
+	zoom = 1/(window.devicePixelRatio || 1);
+	console.log(window.devicePixelRatio, window.innerWidth, window.innerHeight);
+
+	for (const parent of animationParents) {
+		for (const child of parent.childNodes) {
+			const b = child.getBoundingClientRect();
+
+			const dx = correctDelta(b.x, b.width, window.innerWidth);
+			const dy = correctDelta(b.y, b.height, window.innerHeight);
+
+			if (dx || dy) {
+				bump(child, dx, dy);
+				animate(child, dx, dy, 0.75);
+			}
+		}
+	}
+})
+
+/**
  * @param {Ani} ani
- * @param {HTMLElement} root
  * @param {HTMLElement} move
  * @param {number} dx
  * @param {number} dy
+ * @param {number} cx
+ * @param {number} cy
  * @returns {number[]}
  */
-function reversiClamp(ani, root, move, dx, dy) {
-	
-	const w = window.innerWidth;
-	const h = window.innerHeight;
+function reversiClamp(ani, move, dx, dy) {
+	const z = window.devicePixelRatio;
+	const b = move.getBoundingClientRect();
 
-	/** @type {HTMLElement} */
-	const c = move.firstChild || move;
+	const cdx = correctDelta(dx * zoom + b.x, b.width, window.innerWidth);
+	const cdy = correctDelta(dy * zoom + b.y, b.height, window.innerHeight);
 
-	const b = c.getBoundingClientRect();
-
-	if (b.x < 0) {
-		dx -= b.x;
-		ani.dx = ani.dx * -0.75;
-	}
-	if(b.y < 0) {
-		dy -= b.y;
-		ani.dy = ani.dy * -0.75;
+	if (cdx) {
+		dx += cdx * z;
+		ani.dx = Math.sign(cdx) * Math.abs(ani.dx * 0.75);
 	}
 
-	const ddx = b.x + b.width;
-	if(ddx > w) {
-		dx += w - ddx;
-		ani.dx = ani.dx * -0.75;
-	}
-	const ddy = b.y + b.height;
-	if (ddy > h) {
-		dy += h - ddy;
-		ani.dy = ani.dy * -0.75;
+	if (cdy) {
+		dy += cdy * z;
+		ani.dy = Math.sign(cdy) * Math.abs(ani.dy * 0.75);
 	}
 
 	return [dx, dy];
 }
 
+const fifteenth = 1/15;
+// 1 / 1000 / fifteenth
+const stepMul = 0.015;
+
 function tick(timestamp) {
-	const step = ((timestamp - lt) / 1000);
-	lt = timestamp;
+	// Clamp it to 1 at most; deltas larger than 1 would require sprinting
+	const step = Math.min((timestamp - lt) * stepMul, 1);
+	const halfStep = step * 0.5;
 
 	aniTouch.clear();
 
@@ -97,33 +138,30 @@ function tick(timestamp) {
 		}
 
 		const element = ani.element;
-		
+
 		const w = +(element.getAttribute("width") || 1);
 		const h = +(element.getAttribute("height") || 1);
 
-		const c = (1 / (0.00015 * w * h)) * step;
+		const c = (1 / (0.0005 * w * h)) * fifteenth;
 
-		const ldx = ani.dx * 0.15 * step;
-		const ldy = ani.dy * 0.15 * step;
+		const adx = ani.dx;
+		const ady = ani.dy;
 
-		const ddx = (Math.sign(ani.dx) * ani.dx * ani.dx * c) + ldx;
-		const ddy = (Math.sign(ani.dy) * ani.dy * ani.dy * c) + ldy;
+		const ddx = (Math.sign(ani.dx) * ani.dx * ani.dx * c) + (ani.dx * 0.15 * fifteenth);
+		const ddy = (Math.sign(ani.dy) * ani.dy * ani.dy * c) + (ani.dy * 0.15 * fifteenth);
 
-		ani.dx -= ddx;
-		ani.dy -= ddy;
+		ani.dx -= ddx * step;
+		ani.dy -= ddy * step;
 
-		if(!isFinite(ani.dx)) { ani.dx = 0; }
-		if(!isFinite(ani.dy)) { ani.dy = 0; }
+		if(!isFinite(ani.dx) || ani.dx * adx < 0) { ani.dx = 0; }
+		if(!isFinite(ani.dy) || ani.dy * ady < 0) { ani.dy = 0; }
 
-		const style = element.style;
+		let r = reversiClamp(ani, element,
+			(adx + ani.dx) * halfStep,
+			(ady + ani.dy) * halfStep,
+		);
 
-		const cx = (+style.getPropertyValue("--dx") || 0) + ani.dx;
-		const cy = (+style.getPropertyValue("--dy") || 0) + ani.dy;
-
-		let r = reversiClamp(ani, document, element, cx, cy);
-
-		style.setProperty("--dx", r[0]);
-		style.setProperty("--dy", r[1]);
+		bump(element, r[0], r[1]);
 
 		if (Math.abs(ani.dx) < 0.01 && Math.abs(ani.dy) < 0.01) {
 			aniMap.delete(element);
@@ -141,8 +179,9 @@ function tick(timestamp) {
  * @param {HTMLElement} element
  * @param {number} dx
  * @param {number} dy
+ * @param {number} c constant multiplier
  */
-function animate(element, dx, dy) {
+function animate(element, dx, dy, c = 0.25) {
 	if (aniTouch.has(element)) {
 		return;
 	}
@@ -153,7 +192,6 @@ function animate(element, dx, dy) {
 
 	const c = 1 / (0.015 * w * h);
 */
-	const c = 0.25;
 
 	dx *= c;
 	dy *= c;
@@ -167,7 +205,7 @@ function animate(element, dx, dy) {
 	}
 
 	animated.push(new Ani(element, dx, dy));
-	
+
 	if (animated.length == 1) {
 		lt = document.timeline.currentTime;
 		requestAnimationFrame(tick);
@@ -193,8 +231,6 @@ function findSvgElseSelf(element) {
  * @param {MouseEvent} event
  */
 export function mouseover(event) {
-	console.trace("got", event);
-	
 	/** @type {HTMLElement} */
 	const target = event.target;
 
@@ -212,6 +248,7 @@ export function mouseover(event) {
 /** @param {HTMLElement} animate */
 export default function(animate) {
 	animate.dataset.animationParent = "true";
+	animationParents.add(animate);
 	animate.addEventListener("mouseover", mouseover);
 	animate.addEventListener("mousemove", mouseover);
 }
