@@ -10,7 +10,7 @@ function nextEntry(l) {
 	return l[nextInt(l.length)];
 }
 
-const imageSize = 32;
+const imageSize = 48;
 const container = document.getElementById("hibiscus-decorations");
 const typesList = [
 	['pink', 'blue', 'white'], // trans
@@ -48,9 +48,9 @@ for (let n = 0; n < 25; n++) {
 			if (other[0] !== side) return false;
 
 			const dy = other[1] - distance;
-			const dx = (other[2] - orthogonalDistance) * (vertical ? height : width);
+			const dx = (other[2] - orthogonalDistance) * (vertical ? width : height);
 
-			return dy * dy + dx * dx < imageSize * imageSize * 2;
+			return dy * dy + dx * dx < imageSize * imageSize * 1.5;
 		})) {
 			continue;
 		}
@@ -68,7 +68,7 @@ for (const [side, distance, orthogonalDistance] of coordinates) {
 	subElement.setAttribute('href', 'assets/svg/hibiscus.svg#hibiscus')
 	element.appendChild(subElement)
 
-	const size = imageSize * (1.5 * Math.random() + 0.5);
+	const size = imageSize * (0.5 * Math.random() + 0.5);
 	element.setAttribute('width', size);
 	element.setAttribute('height', size);
 	element.classList = `hibiscus-${side} ${nextEntry(types)}`
